@@ -32,4 +32,5 @@ mkdir src
 New-Item src/index.js
 npm install --save react react-dom
 npm install --save react-markdown
+npm install --save react-bootstrap
 ```

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactMarkdown from 'react-markdown';
+import { ButtonToolbar, Button, Modal } from 'react-bootstrap';
 
 function generateGuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -47,8 +48,8 @@ class Preview extends React.Component {
           <div className="panel-heading">
             <h3 className="panel-title">{this.props.slide.name}</h3>
           </div>
-          <div className="panel-body" style={{height: 450 * this.props.scale + 'px'}}>
-            <div style={{ height: '400px', width: '600px', transform: 'scale(' + this.props.scale + ', ' + this.props.scale + ')', transformOrigin: '0 0'}}>
+          <div className="panel-body" style={{ height: 450 * this.props.scale + 'px' }}>
+            <div style={{ height: '400px', width: '600px', transform: 'scale(' + this.props.scale + ', ' + this.props.scale + ')', transformOrigin: '0 0' }}>
               <ReactMarkdown source={this.props.slide.content} escapeHtml />
             </div>
           </div>
@@ -109,6 +110,21 @@ class List extends React.Component {
 }
 
 class SideBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
+    this.state = { showModal: false };
+  }
+
+  start() {
+    this.setState({ showModal: true });
+  }
+
+  stop() {
+    this.setState({ showModal: false });
+  }
+
   render() {
     return (
       <div>
@@ -117,9 +133,23 @@ class SideBar extends React.Component {
         </div>
         <div className="row" style={{ height: '100px' }}>
           <div className="col-md-12">
-            <button className="btn btn-default" onClick={this.props.onAdd}>New slide</button>
+            <ButtonToolbar>
+              <Button onClick={this.props.onAdd}>New slide</Button>
+              <Button bsStyle="success" onClick={this.start}>Start</Button>
+            </ButtonToolbar>
           </div>
         </div>
+        <Modal show={this.state.showModal} bsSize="large" onHide={this.stop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Slideshow</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Text in a modal</h4>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.stop}>Stop</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
