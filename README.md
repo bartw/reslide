@@ -31,4 +31,5 @@ New-Item public/index.html
 mkdir src
 New-Item src/index.js
 npm install --save react react-dom
+npm install --save react-markdown
 ```

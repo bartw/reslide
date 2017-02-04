@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactMarkdown from 'react-markdown';
 
 function generateGuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -15,14 +16,17 @@ class Edit extends React.Component {
   }
 
   handleChange(event) {
-    this.props.onChange(this.props.slide, event.target.value);
+    const name = event.target.name === 'name' ? event.target.value : this.props.slide.name;
+    const content = event.target.name === 'content' ? event.target.value : this.props.slide.content;
+    this.props.onChange(this.props.slide, name, content);
   }
 
   render() {
     return (
       this.props.slide ?
         <div>
-          <input type="text" value={this.props.slide.name} onChange={this.handleChange} />
+          <div><input type="text" name="text" value={this.props.slide.name} onChange={this.handleChange} /></div>
+          <div><textarea name="content" value={this.props.slide.content} onChange={this.handleChange} /></div>
         </div>
         : null
     );
@@ -32,7 +36,12 @@ class Edit extends React.Component {
 class Preview extends React.Component {
   render() {
     return (
-      this.props.slide ? <div>{this.props.slide.name}</div> : null
+      this.props.slide ?
+        <div>
+          <div>{this.props.slide.name}</div>
+          <div><ReactMarkdown source={this.props.slide.content} escapeHtml /></div>
+        </div>
+        : null
     );
   }
 }
@@ -60,9 +69,9 @@ class ListItem extends React.Component {
 
   render() {
     return (
-          <li onClick={this.handleClick}>
-            <Preview slide={this.props.slide} />
-          </li>
+      <li onClick={this.handleClick}>
+        <Preview slide={this.props.slide} />
+      </li>
     );
   }
 }
@@ -98,28 +107,32 @@ class ReSlide extends React.Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.state = {
       slides: [
-        { id: generateGuid(), name: "slide1" },
-        { id: generateGuid(), name: "slide2" },
-        { id: generateGuid(), name: "slide3" },
-        { id: generateGuid(), name: "slide4" },
-        { id: generateGuid(), name: "slide5" }
+        { id: generateGuid(), name: 'slide1', content: '# title\nsome content' },
+        { id: generateGuid(), name: 'slide2', content: '# title\n```js\nconsole.log("hello world");\n```' },
+        { id: generateGuid(), name: 'slide3', content: '# title\n## subtitle\nmore content' },
+        { id: generateGuid(), name: 'slide4', content: 'does this ever stop' },
+        { id: generateGuid(), name: 'slide5', content: 'finally' }
       ],
       selectedSlide: null
     };
   }
 
-  handleChange(slideToUpdate, name) {
+  handleChange(slideToUpdate, name, content) {
     const slides = this.state.slides.map(function (slide) {
       if (slide === slideToUpdate) {
         slide.name = name;
+        slide.content = content;
       }
       return slide;
     });
     this.setState({ slides: slides });
+    this.sideBarStyle = {
+      backgroundColor: 'blue'
+    };
   }
 
   handleAdd() {
-    const newSlide = { id: generateGuid(), name: "newslide" };
+    const newSlide = { id: generateGuid(), name: 'newslide', content: '' };
     const slides = this.state.slides.concat(newSlide);
     this.setState({ slides: slides, selectedSlide: newSlide });
   }
@@ -131,7 +144,7 @@ class ReSlide extends React.Component {
   render() {
     return (
       <div>
-        <SideBar slides={this.state.slides} onAdd={this.handleAdd} onSelect={this.handleSelect} />
+        <SideBar style={this.sideBarStyle} slides={this.state.slides} onAdd={this.handleAdd} onSelect={this.handleSelect} />
         <Details slide={this.state.selectedSlide} onChange={this.handleChange} />
       </div>
     );
