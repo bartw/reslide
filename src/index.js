@@ -1,7 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class SlideEdit extends React.Component {
+function generateGuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+class Edit extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -20,7 +27,7 @@ class SlideEdit extends React.Component {
   }
 }
 
-class SlidePreview extends React.Component {
+class Preview extends React.Component {
   render() {
     return (
       <div>{this.props.slide.name}</div>
@@ -28,27 +35,47 @@ class SlidePreview extends React.Component {
   }
 }
 
-class SlideDetails extends React.Component {
+class Details extends React.Component {
   render() {
     return (
       <div>
-        <SlidePreview slide={this.props.slide} />
-        <SlideEdit slide={this.props.slide} onChange={this.props.onChange} />
+        <Preview slide={this.props.slide} />
+        <Edit slide={this.props.slide} onChange={this.props.onChange} />
       </div>
     );
   }
 }
 
-class SlideList extends React.Component {
+class List extends React.Component {
   render() {
     return (
       <ul>
         {this.props.slides.map((slide) =>
-          <li key={slide.name}>
-            <SlidePreview slide={slide} />
+          <li key={slide.id}>
+            <Preview slide={slide} />
           </li>
         )}
       </ul>
+    );
+  }
+}
+
+class SideBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    this.props.onAdd();
+  }
+
+  render() {
+    return (
+      <div>
+        <List slides={this.props.slides} />
+        <button onClick={this.onClick}>Add</button>
+      </div>
     );
   }
 }
@@ -57,13 +84,14 @@ class ReSlide extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
     this.state = {
       slides: [
-        { name: "slide1" },
-        { name: "slide2" },
-        { name: "slide3" },
-        { name: "slide4" },
-        { name: "slide5" }
+        { id: generateGuid(), name: "slide1" },
+        { id: generateGuid(), name: "slide2" },
+        { id: generateGuid(), name: "slide3" },
+        { id: generateGuid(), name: "slide4" },
+        { id: generateGuid(), name: "slide5" }
       ]
     };
   }
@@ -75,14 +103,19 @@ class ReSlide extends React.Component {
       }
       return slide;
     });
-    this.setState({ slides: slides })
+    this.setState({ slides: slides });
+  }
+
+  handleAdd() {
+    const slides = this.state.slides.concat({ id: generateGuid(), name: "newslide" });
+    this.setState({ slides: slides });
   }
 
   render() {
     return (
       <div>
-        <SlideList slides={this.state.slides} />
-        <SlideDetails slide={this.state.slides[0]} onChange={this.handleChange} />
+        <SideBar slides={this.state.slides} onAdd={this.handleAdd} />
+        <Details slide={this.state.slides[0]} onChange={this.handleChange} />
       </div>
     );
   }
