@@ -1,5 +1,17 @@
 # reslide
 
+## quickstart
+
+```powershell
+git clone https://github.com/bartw/reslide.git
+npm install
+npm start
+```
+
+Browse to http://localhost:8080/
+
+## getting started
+
 ```powershell
 mkdir reslide
 cd reslide
