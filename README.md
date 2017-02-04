@@ -12,6 +12,8 @@ Browse to http://localhost:8080/
 
 ## getting started
 
+https://github.com/facebook/react-devtools
+
 ```powershell
 mkdir reslide
 cd reslide
