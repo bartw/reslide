@@ -109,6 +109,45 @@ class List extends React.Component {
   }
 }
 
+class SlideShow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.previous = this.previous.bind(this);
+    this.next = this.next.bind(this);
+    this.state = { current: this.props.slides.length ? 0 : null };
+  }
+
+  previous() {
+    const current = this.state.current > 0 ? this.state.current - 1 : 0;
+    this.setState({ current: current });
+  }
+
+  next() {
+    const current = this.state.current < (this.props.slides.length - 1) ? this.state.current + 1 : this.state.current;
+    this.setState({ current: current });
+  }
+
+  render() {
+    return (
+      <Modal show={this.props.show} bsSize="large" onHide={this.props.stop}>
+        <Modal.Header closeButton>
+          <Modal.Title>Slideshow</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Preview slide={this.props.slides[this.state.current]} scale="1" />
+        </Modal.Body>
+        <Modal.Footer>
+          <ButtonToolbar>
+            <Button onClick={this.previous}>Previous</Button>
+            <Button onClick={this.next}>Next</Button>
+            <Button onClick={this.props.stop}>Stop</Button>
+          </ButtonToolbar>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+}
+
 class SideBar extends React.Component {
   constructor(props) {
     super(props);
@@ -139,17 +178,7 @@ class SideBar extends React.Component {
             </ButtonToolbar>
           </div>
         </div>
-        <Modal show={this.state.showModal} bsSize="large" onHide={this.stop}>
-          <Modal.Header closeButton>
-            <Modal.Title>Slideshow</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>Text in a modal</h4>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.stop}>Stop</Button>
-          </Modal.Footer>
-        </Modal>
+        <SlideShow slides={this.props.slides} show={this.state.showModal} stop={this.stop} />
       </div>
     );
   }
