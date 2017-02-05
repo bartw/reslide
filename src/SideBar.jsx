@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonToolbar, Button } from 'react-bootstrap';
-import SlideShow from './SlideShow';
-import List from './List';
+import SlideShow from './SlideShow.jsx';
+import List from './List.jsx';
 
 export default class SideBar extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
-import SideBar from './SideBar';
-import Details from './Details';
+import SideBar from './SideBar.jsx';
+import Details from './Details.jsx';
 
 function generateGuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {

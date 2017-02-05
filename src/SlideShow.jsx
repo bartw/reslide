@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonToolbar, Button, Modal } from 'react-bootstrap';
-import Preview from './Preview';
+import Preview from './Preview.jsx';
 
 export default class SlideShow extends React.Component {
   constructor(props) {

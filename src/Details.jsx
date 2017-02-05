@@ -1,6 +1,6 @@
 import React from 'react';
-import Preview from './Preview';
-import Edit from './Edit';
+import Preview from './Preview.jsx';
+import Edit from './Edit.jsx';
 
 export default class Details extends React.Component {
   render() {
