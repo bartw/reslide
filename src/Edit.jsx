@@ -1,4 +1,5 @@
 import React from 'react';
+import { ButtonToolbar, Button } from 'react-bootstrap';
 
 export default class Edit extends React.Component {
   constructor(props) {
@@ -24,6 +25,9 @@ export default class Edit extends React.Component {
             <label htmlFor="content">Content</label>
             <textarea className="form-control" id="content" name="content" placeholder="Content" value={this.props.slide.content} onChange={this.handleChange} style={{ height: '200px', resize: 'non' }} />
           </div>
+          <ButtonToolbar>
+              <Button onClick={this.props.onRemove}>Remove slide</Button>
+            </ButtonToolbar>
         </form>
         : null
     );

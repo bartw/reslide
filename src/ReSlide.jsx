@@ -3,7 +3,7 @@ import SideBar from './SideBar.jsx';
 import Details from './Details.jsx';
 
 function generateGuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
@@ -14,6 +14,7 @@ export default class ReSlide extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.state = {
       slides: [
@@ -28,7 +29,7 @@ export default class ReSlide extends React.Component {
   }
 
   handleChange(slideToUpdate, name, content) {
-    const slides = this.state.slides.map(function (slide) {
+    const slides = this.state.slides.map((slide) => {
       if (slide === slideToUpdate) {
         slide.name = name;
         slide.content = content;
@@ -47,6 +48,13 @@ export default class ReSlide extends React.Component {
     this.setState({ slides: slides, selectedSlide: newSlide });
   }
 
+  handleRemove() {
+    const slides = this.state.slides.filter((slide) => {
+      return slide !== this.state.selectedSlide;
+    })
+    this.setState({ slides: slides, selectedSlide: null });
+  }
+
   handleSelect(slide) {
     this.setState({ selectedSlide: slide });
   }
@@ -58,7 +66,7 @@ export default class ReSlide extends React.Component {
           <SideBar style={this.sideBarStyle} slides={this.state.slides} onAdd={this.handleAdd} onSelect={this.handleSelect} />
         </div>
         <div className="col-md-9">
-          <Details slide={this.state.selectedSlide} onChange={this.handleChange} />
+          <Details slide={this.state.selectedSlide} onChange={this.handleChange} onRemove={this.handleRemove} />
         </div>
       </div>
     );

@@ -13,7 +13,7 @@ export default class Details extends React.Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <Edit slide={this.props.slide} onChange={this.props.onChange} />
+            <Edit slide={this.props.slide} onChange={this.props.onChange} onRemove={this.props.onRemove} />
           </div>
         </div>
       </div>
