@@ -37,6 +37,6 @@ npm install --save react-bootstrap
 
 ## recommended reading
 
-https://facebook.github.io/react/docs/hello-world.html
-https://github.com/airbnb/javascript/tree/master/react
-http://redux.js.org/
+* https://facebook.github.io/react/docs/hello-world.html
+* https://github.com/airbnb/javascript/tree/master/react
+* http://redux.js.org/
